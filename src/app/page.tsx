@@ -52,7 +52,7 @@ export default function Home() {
             </h1>
           </div>
 
-          <div className="flex flex-col text-sm font-thin items-center justify-center mt-6 gap-6">
+          <div className="flex flex-col text-sm items-center justify-center mt-6 gap-6">
             <div className="flex items-center w-full justify-center mx-4">
               <button className="bg-white w-full border-2 shadow-md px-2 py-2 rounded-lg flex items-center justify-center space-x-2">
                 <FcGoogle size={32} />
