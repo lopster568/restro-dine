@@ -1,21 +1,39 @@
+"use client";
 import Navbar from "@/components/Navbar";
+import { useEffect, useState } from "react";
+import { CgSpinner } from "react-icons/cg";
 import { MdDelete } from "react-icons/md";
 
+type MenuItem = {
+  _id: string;
+  category: string;
+  name: string;
+  eta: string;
+};
+
 const Page = () => {
-  const items = [
-    {
-      id: 1,
-      category: "Starters",
-      name: "Tandoori Chaap",
-      eta: "20 mins",
-    },
-    {
-      id: 2,
-      category: "Soup",
-      name: "Sweet Corn Soup",
-      eta: "10 mins",
-    },
-  ];
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    fetch("/api/menu-items")
+      .then((res) => res.json())
+      .then((data) => {
+        setItems(data.items);
+        setLoading(false);
+      });
+  }, []);
+
+  const deleteItem = async (id: string) => {
+    const res = await fetch(`/api/menu-items`, {
+      method: "DELETE",
+      body: JSON.stringify({ id }),
+    });
+    if (res.ok) {
+      const newItems = items.filter((item: MenuItem) => item._id !== id);
+      setItems(newItems);
+    }
+  };
+
   return (
     <>
       <Navbar />
@@ -66,20 +84,44 @@ const Page = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {items.map((item) => (
-                    <tr key={item.id} className="bg-white border-b">
+                  {items.map((item: MenuItem, index) => (
+                    <tr key={item._id} className="bg-white border-b">
                       <td className="px-6 py-4 font-medium  whitespace-nowrap ">
-                        {item.category}
+                        {item?.category}
                       </td>
-                      <td className="px-6 py-4">{item.name}</td>
-                      <td className="px-6 py-4">{item.eta}</td>
+                      <td className="px-6 py-4">{item?.name}</td>
+                      <td className="px-6 py-4">{item?.eta}</td>
                       <td className="px-6 py-4">
-                        <MdDelete color="#FF4D4D" size={25} />
+                        <MdDelete
+                          onClick={() => deleteItem(item._id)}
+                          color="#FF4D4D"
+                          size={25}
+                          className="cursor-pointer"
+                        />
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
+              {items.length === 0 && !loading && (
+                <div className="flex justify-center items-center h-40">
+                  <h1 className="text-2xl font-bold text-[#77248BB5]">
+                    No items found
+                  </h1>
+                </div>
+              )}
+              {loading && (
+                <div className="flex gap-8 justify-center my-4">
+                  <CgSpinner
+                    size={30}
+                    className="animate-spin"
+                    color="#77248BB5"
+                  />
+                  <h1 className="text-2xl font-bold text-[#77248BB5] animate-pulse">
+                    Loading ...
+                  </h1>
+                </div>
+              )}
             </div>
           </div>
         </div>
