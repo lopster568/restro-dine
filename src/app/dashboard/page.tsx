@@ -9,6 +9,8 @@ type MenuItem = {
   category: string;
   name: string;
   eta: string;
+  spice: number;
+  signature: boolean;
 };
 
 const Page = () => {
@@ -89,7 +91,14 @@ const Page = () => {
                       <td className="px-6 py-4 font-medium  whitespace-nowrap ">
                         {item?.category}
                       </td>
-                      <td className="px-6 py-4">{item?.name}</td>
+                      <td
+                        className={`px-6 py-4 ${
+                          item.signature ? "text-yellow-500 font-semibold " : ""
+                        }`}
+                      >
+                        {item?.name}
+                        {"🌶️".repeat(item.spice)}
+                      </td>
                       <td className="px-6 py-4">{item?.eta}</td>
                       <td className="px-6 py-4">
                         <MdDelete

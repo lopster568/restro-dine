@@ -13,6 +13,8 @@ const Page = () => {
   const categoryRef = useRef<HTMLSelectElement>(null);
   const itemNameRef = useRef<HTMLInputElement>(null);
   const etaRef = useRef<HTMLInputElement>(null);
+  const spiceLevelRef = useRef<HTMLSelectElement>(null);
+  const isSignatureRef = useRef<HTMLSelectElement>(null);
 
   const [itemAdded, setItemAdded] = useState(false);
 
@@ -20,10 +22,25 @@ const Page = () => {
     const category = categoryRef.current?.value;
     const itemName = itemNameRef.current?.value;
     const eta = etaRef.current?.value;
+    let spiceLevel = Number(spiceLevelRef.current?.value) as string | number;
+    let isSignature = isSignatureRef.current?.value as string | boolean;
+
+    if (isSignature === "1") {
+      isSignature = true;
+    } else {
+      isSignature = false;
+    }
+
     if (category !== "null" && itemName && eta) {
       const res = await fetch("/api/menu-items", {
         method: "POST",
-        body: JSON.stringify({ category, itemName, eta }),
+        body: JSON.stringify({
+          category,
+          name: itemName,
+          eta,
+          spice: spiceLevel,
+          signature: isSignature,
+        }),
       });
       if (res.ok) {
         setItemAdded(true);
@@ -34,6 +51,14 @@ const Page = () => {
     } else {
       alert("Please enter all the fields");
     }
+
+    console.log({
+      category,
+      itemName,
+      eta,
+      spiceLevel,
+      isSignature,
+    });
   };
 
   return (
@@ -92,6 +117,38 @@ const Page = () => {
                   className="border p-2"
                 />
               </div>
+              <div className="space-y-2">
+                <h3 className="font-poppins text-[#77248BB5]">
+                  Spice <span className="text-sm">(optional)</span>
+                </h3>
+                <select
+                  ref={spiceLevelRef}
+                  defaultValue={"null"}
+                  className="border p-2 w-4/5"
+                >
+                  <option value={0} hidden>
+                    Select Spice Level
+                  </option>
+                  <option value={0}>Not Applicable</option>
+                  <option value={1}>🌶️</option>
+                  <option value={2}>🌶️🌶️</option>
+                  <option value={3}>🌶️🌶️🌶️</option>
+                </select>
+              </div>
+              <div className="space-y-2">
+                <h3 className="font-poppins text-[#77248BB5]">
+                  Signature Dish <span className="text-sm">(optional)</span>
+                </h3>
+                <select
+                  ref={isSignatureRef}
+                  defaultValue={0}
+                  className="border p-2 w-4/5"
+                >
+                  <option value={0}>No</option>
+                  <option value={1}>Yes</option>
+                </select>
+              </div>
+
               <button
                 onClick={saveMenu}
                 className="group w-3/5 relative flex justify-center p-2 px-12 border border-transparent text-md  rounded-md text-white bg-[#77248BB5] hover:bg-[#76248b61] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#77248BB5]"
