@@ -8,7 +8,6 @@ import { MdOutlineDashboard, MdOutlineMenuBook } from "react-icons/md";
 
 const MobSidebar = () => {
   const pathname = usePathname();
-  const isDashboard = pathname === "/dashboard";
   return (
     <div className="flex w-full md:hidden text-center justify-center">
       <div className="flex flex-col border-r-1 font-bold text-xl text-[#77248BB5] ">
@@ -22,7 +21,7 @@ const MobSidebar = () => {
           <Link
             href={"/dashboard"}
             className={`flex gap-4 items-center justify-start p-2 ${
-              isDashboard ? "border-[#77248BB5] border-b-4" : ""
+              pathname === "/dashboard" ? "border-[#77248BB5] border-b-4" : ""
             }`}
           >
             <MdOutlineDashboard color="#77248BB5" size={30} />
@@ -30,20 +29,24 @@ const MobSidebar = () => {
           <Link
             href={"/dashboard/menu"}
             className={`flex gap-4 items-center justify-start p-2 ${
-              !isDashboard ? "border-[#77248BB5] border-b-4" : ""
+              pathname === "/dashboard/menu" ? "border-[#77248BB5] border-b-4" : ""
             }`}
           >
             <MdOutlineMenuBook color="#77248BB5" size={30} />
           </Link>
           <Link
-            href={"#"}
-            className={`flex gap-4 items-center justify-start p-2`}
+            href={"/dashboard/orders"}
+            className={`flex gap-4 items-center justify-start p-2 ${
+              pathname === "/dashboard/orders" ? "border-[#77248BB5] border-b-4" : ""
+            }`}
           >
             <GoChecklist color="#77248BB5" size={30} />
           </Link>
           <Link
-            href={"#"}
-            className={`flex gap-4 items-center justify-start p-2`}
+            href={"/dashboard/services"}
+            className={`flex gap-4 items-center justify-start p-2 ${
+              pathname === "/dashboard/services" ? "border-[#77248BB5] border-b-4" : ""
+            }`}
           >
             <BsPersonRaisedHand color="#77248BB5" size={30} />
           </Link>

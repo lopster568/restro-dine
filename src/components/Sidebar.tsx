@@ -9,7 +9,6 @@ import MobSidebar from "./Mob-Sidebar";
 
 const Sidebar = ({ children }: { children: ReactElement }) => {
   const pathname = usePathname();
-  const isDashboard = pathname === "/dashboard";
   return (
     <div className="flex">
       <div className="md:flex hidden md:flex-col relative w-2/5 h-screen border-r-1 font-bold text-xl text-[#77248BB5] gap-8 ">
@@ -22,7 +21,7 @@ const Sidebar = ({ children }: { children: ReactElement }) => {
         <Link
           href={"/dashboard"}
           className={`flex gap-4 items-center justify-start p-2 px-8 ${
-            isDashboard ? "border-[#77248BB5] border-l-4" : ""
+            pathname === "/dashboard" ? "border-[#77248BB5] border-l-4" : ""
           }`}
         >
           <MdOutlineDashboard color="#77248BB5" size={30} />
@@ -31,22 +30,26 @@ const Sidebar = ({ children }: { children: ReactElement }) => {
         <Link
           href={"/dashboard/menu"}
           className={`flex gap-4 items-center justify-start p-2 px-8 ${
-            !isDashboard ? "border-[#77248BB5] border-l-4" : ""
+            pathname === "/dashboard/menu" ? "border-[#77248BB5] border-l-4" : ""
           }`}
         >
           <MdOutlineMenuBook color="#77248BB5" size={30} />
           <h1>Add Menu</h1>
         </Link>
         <Link
-          href={"#"}
-          className={`flex gap-4 items-center justify-start p-2 px-8`}
+          href={"/dashboard/orders"}
+          className={`flex gap-4 items-center justify-start p-2 px-8 ${
+            pathname === "/dashboard/orders" ? "border-[#77248BB5] border-l-4" : ""
+          }`}
         >
           <GoChecklist color="#77248BB5" size={30} />
           <h1>Orders</h1>
         </Link>
         <Link
-          href={"#"}
-          className={`flex gap-4 items-center justify-start p-2 px-8`}
+          href={"/dashboard/services"}
+          className={`flex gap-4 items-center justify-start p-2 px-8 ${
+            pathname === "/dashboard/services" ? "border-[#77248BB5] border-l-4" : ""
+          }`}
         >
           <BsPersonRaisedHand color="#77248BB5" size={30} />
           <h1>Service Request</h1>
