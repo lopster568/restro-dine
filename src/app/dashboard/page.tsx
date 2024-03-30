@@ -2,7 +2,7 @@
 import Navbar from "@/components/Navbar";
 import { useEffect, useState } from "react";
 import { CgSpinner } from "react-icons/cg";
-import { MdDelete } from "react-icons/md";
+import { MdDelete, MdEdit } from "react-icons/md";
 
 type MenuItem = {
   _id: string;
@@ -82,11 +82,17 @@ const Page = () => {
                     <th scope="col" className="px-6 py-3">
                       ETA
                     </th>
+                    <th scope="col" className="px-6 py-3">
+                      Spice
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      Signature Dish
+                    </th>
                     <th scope="col" className="px-6 py-3"></th>
                   </tr>
                 </thead>
                 <tbody>
-                  {items.map((item: MenuItem, index) => (
+                  {items.map((item: MenuItem) => (
                     <tr key={item._id} className="bg-white border-b">
                       <td className="px-6 py-4 font-medium  whitespace-nowrap ">
                         {item?.category}
@@ -100,7 +106,17 @@ const Page = () => {
                         {"🌶️".repeat(item.spice)}
                       </td>
                       <td className="px-6 py-4">{item?.eta}</td>
+                      <td className="px-6 py-4">{item?.spice}</td>
                       <td className="px-6 py-4">
+                        {item?.signature ? "Yes" : "No"}
+                      </td>
+                      <td className="px-6 py-4 flex gap-4">
+                        <MdEdit
+                          onClick={() => {}}
+                          color="#999"
+                          size={25}
+                          className="cursor-pointer"
+                        />
                         <MdDelete
                           onClick={() => deleteItem(item._id)}
                           color="#FF4D4D"
