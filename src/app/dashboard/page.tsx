@@ -83,6 +83,9 @@ const Page = () => {
                       ETA
                     </th>
                     <th scope="col" className="px-6 py-3">
+                      Price
+                    </th>
+                    <th scope="col" className="px-6 py-3">
                       Spice
                     </th>
                     <th scope="col" className="px-6 py-3">
@@ -106,6 +109,7 @@ const Page = () => {
                         {"🌶️".repeat(item.spice)}
                       </td>
                       <td className="px-6 py-4">{item?.eta}</td>
+                      <td className="px-6 py-4">20</td>
                       <td className="px-6 py-4">{item?.spice}</td>
                       <td className="px-6 py-4">
                         {item?.signature ? "Yes" : "No"}

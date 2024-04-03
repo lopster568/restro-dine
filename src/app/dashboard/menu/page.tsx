@@ -1,22 +1,26 @@
 "use client";
 import Navbar from "@/components/Navbar";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { BiCheckCircle } from "react-icons/bi";
+import CreatableSelect from "react-select/creatable";
+import Select from "react-select";
 
 const Page = () => {
-  const categories = [
-    "Veg Starters",
-    "Non-Veg Starters",
-    "Main Course",
-    "Soup",
-  ];
+  const [categories, setCategories] = useState([]);
+  const [itemAdded, setItemAdded] = useState(false);
   const categoryRef = useRef<HTMLSelectElement>(null);
   const itemNameRef = useRef<HTMLInputElement>(null);
   const etaRef = useRef<HTMLInputElement>(null);
   const spiceLevelRef = useRef<HTMLSelectElement>(null);
   const isSignatureRef = useRef<HTMLSelectElement>(null);
 
-  const [itemAdded, setItemAdded] = useState(false);
+  useEffect(() => {
+    fetch("/api/category")
+      .then((res) => res.json())
+      .then((data) => {
+        setCategories(data);
+      });
+  }, []);
 
   const saveMenu = async () => {
     const category = categoryRef.current?.value;
@@ -84,20 +88,12 @@ const Page = () => {
               </h2>
               <div className="space-y-2">
                 <h3 className="font-poppins text-[#77248BB5]">Category</h3>
-                <select
-                  ref={categoryRef}
-                  defaultValue={"null"}
-                  className="border p-2 w-4/5"
-                >
-                  <option value={"null"} hidden>
-                    Enter a Category
-                  </option>
-                  {categories.map((category, index) => (
-                    <option key={index} value={category}>
-                      {category}
-                    </option>
-                  ))}
-                </select>
+                {/* USE AYSNC */}
+                <CreatableSelect
+                  defaultValue={categories[0]}
+                  name="color"
+                  options={categories}
+                />
               </div>
               <div className="space-y-2">
                 <h3 className="font-poppins  text-[#77248BB5]">Item Name</h3>
