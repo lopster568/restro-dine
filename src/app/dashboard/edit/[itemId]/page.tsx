@@ -12,7 +12,9 @@ const spiceLevels = [
   { value: "spiciest", label: "Spiciest" },
 ];
 
-const Page = () => {
+const Page = ({ params }: { params: { itemId: string } }) => {
+  const { itemId } = params;
+
   const [selectedCategory, setSelectedCategory] = useState<String>("");
   const [selectedSpice, setSelectedSpice] = useState<String>("NA");
   const [selectedSignature, setSelectedSignature] = useState<boolean>(false);
@@ -31,6 +33,22 @@ const Page = () => {
       });
   }, []);
 
+  useEffect(() => {
+    fetch(`/api/menu-item?id=${itemId}`)
+      .then((res) => res.json())
+      .then((data) => {
+        const { item } = data;
+        setSelectedCategory(item.category);
+        setSelectedSpice(item.spice);
+        setSelectedSignature(item.signature);
+        if (itemNameRef.current && etaRef.current && priceRef.current) {
+          itemNameRef.current.value = item.name;
+          etaRef.current.value = item.eta;
+          priceRef.current.value = item.price;
+        }
+      });
+  }, []);
+
   const saveMenu = async () => {
     const category = selectedCategory;
     const spiceLevel = selectedSpice;
@@ -41,8 +59,8 @@ const Page = () => {
     const price = priceRef.current?.value;
 
     if (category && itemName && eta && price) {
-      const res = await fetch("/api/menu-items", {
-        method: "POST",
+      const res = await fetch(`/api/menu-item?id=${itemId}`, {
+        method: "PATCH",
         body: JSON.stringify({
           category,
           name: itemName,
@@ -73,7 +91,7 @@ const Page = () => {
               {itemAdded && (
                 <div className="flex text-center items-center gap-4 p-4 shadow-md animate-bounce mt-2">
                   <BiCheckCircle size={30} />
-                  <h3>Item Added</h3>
+                  <h3>Item Updated</h3>
                 </div>
               )}
               <h2 className="font-poppins text-3xl font-extrabold text-[#77248BB5]">
@@ -86,7 +104,9 @@ const Page = () => {
                 {/* USE AYSNC */}
                 <CreatableSelect
                   onChange={(e: any) => setSelectedCategory(e?.value)}
-                  defaultValue={categories[0]}
+                  value={categories.filter(
+                    (category: any) => category.value === selectedCategory
+                  )}
                   name="color"
                   options={categories}
                 />
@@ -126,7 +146,9 @@ const Page = () => {
                 </h3>
                 <ReactSelect
                   onChange={(e: any) => setSelectedSpice(e?.value)}
-                  defaultValue={{ value: "NA", label: "Not Applicable" }}
+                  value={spiceLevels.filter(
+                    (spice: any) => spice.value === selectedSpice
+                  )}
                   name="spice"
                   options={spiceLevels}
                 />
@@ -138,7 +160,10 @@ const Page = () => {
                 <ReactSelect
                   onChange={(e: any) => setSelectedSignature(e?.value)}
                   name="signature"
-                  defaultValue={{ value: false, label: "No" }}
+                  value={{
+                    value: selectedSignature,
+                    label: selectedSignature ? "Yes" : "No",
+                  }}
                   options={[
                     { value: true, label: "Yes" },
                     { value: false, label: "No" },

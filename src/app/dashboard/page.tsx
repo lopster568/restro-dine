@@ -1,5 +1,6 @@
 "use client";
 import Navbar from "@/components/Navbar";
+import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { CgSpinner } from "react-icons/cg";
 import { MdDelete, MdEdit } from "react-icons/md";
@@ -15,6 +16,8 @@ type MenuItem = {
 };
 
 const Page = () => {
+  const router = useRouter();
+
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showFilteredItems, setShowFilteredItems] = useState(false);
@@ -155,7 +158,7 @@ const Page = () => {
                           </td>
                           <td className="px-6 py-4 flex gap-4">
                             <MdEdit
-                              onClick={() => {}}
+                              onClick={() => router.push(`/dashboard/edit/${item._id}`)}
                               color="#999"
                               size={25}
                               className="cursor-pointer"
@@ -190,7 +193,7 @@ const Page = () => {
                           </td>
                           <td className="px-6 py-4 flex gap-4">
                             <MdEdit
-                              onClick={() => {}}
+                              onClick={() => console.log("Edit")}
                               color="#999"
                               size={25}
                               className="cursor-pointer"
