@@ -11,6 +11,7 @@ type MenuItem = {
   eta: string;
   spice: number;
   signature: boolean;
+  price: number;
 };
 
 const Page = () => {
@@ -100,16 +101,9 @@ const Page = () => {
                       <td className="px-6 py-4 font-medium  whitespace-nowrap ">
                         {item?.category}
                       </td>
-                      <td
-                        className={`px-6 py-4 ${
-                          item.signature ? "text-yellow-500 font-semibold " : ""
-                        }`}
-                      >
-                        {item?.name}
-                        {"🌶️".repeat(item.spice)}
-                      </td>
+                      <td className="px-6 py-4">{item?.name}</td>
                       <td className="px-6 py-4">{item?.eta}</td>
-                      <td className="px-6 py-4">20</td>
+                      <td className="px-6 py-4">{item?.price}</td>
                       <td className="px-6 py-4">{item?.spice}</td>
                       <td className="px-6 py-4">
                         {item?.signature ? "Yes" : "No"}
