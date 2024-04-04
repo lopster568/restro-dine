@@ -2,17 +2,26 @@
 import Navbar from "@/components/Navbar";
 import { useEffect, useRef, useState } from "react";
 import { BiCheckCircle } from "react-icons/bi";
+import ReactSelect from "react-select";
 import CreatableSelect from "react-select/creatable";
-import Select from "react-select";
+
+const spiceLevels = [
+  { value: "NA", label: "Not Applicable" },
+  { value: "sweet", label: "Sweet" },
+  { value: "spicy", label: "Spicy" },
+  { value: "spiciest", label: "Spiciest" },
+];
 
 const Page = () => {
+  const [selectedCategory, setSelectedCategory] = useState<String>("");
+  const [selectedSpice, setSelectedSpice] = useState<String>("");
+  const [selectedSignature, setSelectedSignature] = useState<String>("");
+
   const [categories, setCategories] = useState([]);
   const [itemAdded, setItemAdded] = useState(false);
-  const categoryRef = useRef<HTMLSelectElement>(null);
   const itemNameRef = useRef<HTMLInputElement>(null);
   const etaRef = useRef<HTMLInputElement>(null);
-  const spiceLevelRef = useRef<HTMLSelectElement>(null);
-  const isSignatureRef = useRef<HTMLSelectElement>(null);
+  const priceRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     fetch("/api/category")
@@ -23,25 +32,31 @@ const Page = () => {
   }, []);
 
   const saveMenu = async () => {
-    const category = categoryRef.current?.value;
+    const category = selectedCategory;
+    const spiceLevel = selectedSpice;
+    const isSignature = selectedSignature;
+
     const itemName = itemNameRef.current?.value;
     const eta = etaRef.current?.value;
-    let spiceLevel = Number(spiceLevelRef.current?.value) as string | number;
-    let isSignature = isSignatureRef.current?.value as string | boolean;
-
-    if (isSignature === "1") {
-      isSignature = true;
-    } else {
-      isSignature = false;
-    }
+    const price = priceRef.current?.value;
 
     if (category !== "null" && itemName && eta) {
+      console.log({
+        category,
+        itemName,
+        eta,
+        price,
+        spiceLevel,
+        isSignature,
+      });
+
       const res = await fetch("/api/menu-items", {
         method: "POST",
         body: JSON.stringify({
           category,
           name: itemName,
           eta,
+          price,
           spice: spiceLevel,
           signature: isSignature,
         }),
@@ -89,16 +104,21 @@ const Page = () => {
                 Add Your Menu
               </h2>
               <div className="space-y-2">
-                <h3 className="font-poppins text-[#77248BB5]">Category</h3>
+                <h3 className="font-poppins text-[#77248BB5] text-sm">
+                  Category
+                </h3>
                 {/* USE AYSNC */}
                 <CreatableSelect
+                  onChange={(e: any) => setSelectedCategory(e?.value)}
                   defaultValue={categories[0]}
                   name="color"
                   options={categories}
                 />
               </div>
               <div className="space-y-2">
-                <h3 className="font-poppins  text-[#77248BB5]">Item Name</h3>
+                <h3 className="font-poppins  text-[#77248BB5] text-sm">
+                  Item Name
+                </h3>
                 <input
                   ref={itemNameRef}
                   type="text"
@@ -107,44 +127,47 @@ const Page = () => {
                 />
               </div>
               <div className="space-y-2">
-                <h3 className="font-poppins text-[#77248BB5]">ETA</h3>
+                <h3 className="font-poppins text-[#77248BB5] text-sm">ETA</h3>
                 <input
                   ref={etaRef}
-                  type="number"
+                  type="string"
                   placeholder="ETA (mins) "
                   className="border p-2"
                 />
               </div>
               <div className="space-y-2">
-                <h3 className="font-poppins text-[#77248BB5]">
-                  Spice <span className="text-sm">(optional)</span>
-                </h3>
-                <select
-                  ref={spiceLevelRef}
-                  defaultValue={"null"}
-                  className="border p-2 w-4/5"
-                >
-                  <option value={0} hidden>
-                    Select Spice Level
-                  </option>
-                  <option value={0}>Not Applicable</option>
-                  <option value={1}>🌶️</option>
-                  <option value={2}>🌶️🌶️</option>
-                  <option value={3}>🌶️🌶️🌶️</option>
-                </select>
+                <h3 className="font-poppins text-[#77248BB5] text-sm">Price</h3>
+                <input
+                  ref={priceRef}
+                  type="string"
+                  placeholder="Price (Rs) "
+                  className="border p-2"
+                />
               </div>
               <div className="space-y-2">
-                <h3 className="font-poppins text-[#77248BB5]">
+                <h3 className="font-poppins text-[#77248BB5] text-sm">
+                  Spice <span className="text-sm">(optional)</span>
+                </h3>
+                <ReactSelect
+                  onChange={(e: any) => setSelectedSpice(e?.value)}
+                  defaultValue={{ value: "NA", label: "Not Applicable" }}
+                  name="spice"
+                  options={spiceLevels}
+                />
+              </div>
+              <div className="space-y-2">
+                <h3 className="font-poppins text-[#77248BB5] text-sm">
                   Signature Dish <span className="text-sm">(optional)</span>
                 </h3>
-                <select
-                  ref={isSignatureRef}
-                  defaultValue={0}
-                  className="border p-2 w-4/5"
-                >
-                  <option value={0}>No</option>
-                  <option value={1}>Yes</option>
-                </select>
+                <ReactSelect
+                  onChange={(e: any) => setSelectedSignature(e?.value)}
+                  name="signature"
+                  defaultValue={{ value: false, label: "No" }}
+                  options={[
+                    { value: true, label: "Yes" },
+                    { value: false, label: "No" },
+                  ]}
+                />
               </div>
 
               <button

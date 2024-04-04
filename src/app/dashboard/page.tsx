@@ -1,6 +1,6 @@
 "use client";
 import Navbar from "@/components/Navbar";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CgSpinner } from "react-icons/cg";
 import { MdDelete, MdEdit } from "react-icons/md";
 
@@ -17,6 +17,37 @@ type MenuItem = {
 const Page = () => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showFilteredItems, setShowFilteredItems] = useState(false);
+  const [filteredItems, setFilteredItems] = useState([]);
+  const categoryFilterRef = useRef<HTMLInputElement>(null);
+
+  const filterByName = (name: string) => {
+    if (name === "") return setShowFilteredItems(false);
+    const filteredItems = items.filter((item: MenuItem) =>
+      item.name.toLocaleLowerCase().includes(name.toLowerCase())
+    );
+    setFilteredItems(filteredItems);
+    setShowFilteredItems(true);
+  };
+
+  const filterByETA = (eta: string) => {
+    if (eta === "") return setShowFilteredItems(false);
+    const filteredItems = items.filter((item: MenuItem) =>
+      item.eta.toLocaleLowerCase().includes(eta.toLowerCase())
+    );
+    setFilteredItems(filteredItems);
+    setShowFilteredItems(true);
+  };
+
+  const filterByCategory = (category: string) => {
+    if (category === "") return setShowFilteredItems(false);
+    const filteredItems = items.filter((item: MenuItem) =>
+      item.category.toLocaleLowerCase().includes(category.toLowerCase())
+    );
+    setFilteredItems(filteredItems);
+    setShowFilteredItems(true);
+  };
+
   useEffect(() => {
     fetch("/api/menu-items")
       .then((res) => res.json())
@@ -51,9 +82,11 @@ const Page = () => {
             <div className="space-y-4">
               <h3 className="font-poppins text-[#77248BB5]">Category</h3>
               <input
+                ref={categoryFilterRef}
                 type="text"
                 placeholder="Enter Category"
                 className="border p-2"
+                onChange={(e) => filterByCategory(e.target.value)}
               />
             </div>
             <div className="space-y-4">
@@ -96,34 +129,81 @@ const Page = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {items.map((item: MenuItem) => (
-                    <tr key={item._id} className="bg-white border-b">
-                      <td className="px-6 py-4 font-medium  whitespace-nowrap ">
-                        {item?.category}
-                      </td>
-                      <td className="px-6 py-4">{item?.name}</td>
-                      <td className="px-6 py-4">{item?.eta}</td>
-                      <td className="px-6 py-4">{item?.price}</td>
-                      <td className="px-6 py-4">{item?.spice}</td>
-                      <td className="px-6 py-4">
-                        {item?.signature ? "Yes" : "No"}
-                      </td>
-                      <td className="px-6 py-4 flex gap-4">
-                        <MdEdit
-                          onClick={() => {}}
-                          color="#999"
-                          size={25}
-                          className="cursor-pointer"
-                        />
-                        <MdDelete
-                          onClick={() => deleteItem(item._id)}
-                          color="#FF4D4D"
-                          size={25}
-                          className="cursor-pointer"
-                        />
-                      </td>
-                    </tr>
-                  ))}
+                  {!showFilteredItems ? (
+                    <>
+                      {items.map((item: MenuItem) => (
+                        <tr key={item._id} className="bg-white border-b">
+                          <td className="px-6 py-4 font-medium  whitespace-nowrap ">
+                            {item?.category}
+                          </td>
+                          <td className={`px-6 py-4 capitalize`}>
+                            {item?.name}
+                          </td>
+                          <td className="px-6 py-4">{item?.eta} mins</td>
+                          <td className="px-6 py-4">{item?.price} Rs</td>
+                          <td className="px-6 py-4 capitalize">
+                            {item?.spice}
+                          </td>
+                          <td className="px-6 py-4 capitalize">
+                            {item?.signature ? "Yes" : "No"}
+                          </td>
+                          <td className="px-6 py-4 flex gap-4">
+                            <MdEdit
+                              onClick={() => {}}
+                              color="#999"
+                              size={25}
+                              className="cursor-pointer"
+                            />
+                            <MdDelete
+                              onClick={() => deleteItem(item._id)}
+                              color="#FF4D4D"
+                              size={25}
+                              className="cursor-pointer"
+                            />
+                          </td>
+                        </tr>
+                      ))}
+                    </>
+                  ) : (
+                    <>
+                      {filteredItems.map((item: MenuItem) => (
+                        <tr key={item._id} className="bg-white border-b">
+                          <td className="px-6 py-4 font-medium  whitespace-nowrap ">
+                            {item?.category}
+                          </td>
+                          <td
+                            className={`px-6 py-4 ${
+                              item.signature
+                                ? "text-yellow-500 font-semibold "
+                                : ""
+                            }`}
+                          >
+                            {item?.name}
+                            {"🌶️".repeat(item.spice)}
+                          </td>
+                          <td className="px-6 py-4">{item?.eta}</td>
+                          <td className="px-6 py-4">{item?.spice}</td>
+                          <td className="px-6 py-4">
+                            {item?.signature ? "Yes" : "No"}
+                          </td>
+                          <td className="px-6 py-4 flex gap-4">
+                            <MdEdit
+                              onClick={() => {}}
+                              color="#999"
+                              size={25}
+                              className="cursor-pointer"
+                            />
+                            <MdDelete
+                              onClick={() => deleteItem(item._id)}
+                              color="#FF4D4D"
+                              size={25}
+                              className="cursor-pointer"
+                            />
+                          </td>
+                        </tr>
+                      ))}
+                    </>
+                  )}
                 </tbody>
               </table>
               {items.length === 0 && !loading && (
