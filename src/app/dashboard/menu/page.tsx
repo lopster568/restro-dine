@@ -14,8 +14,8 @@ const spiceLevels = [
 
 const Page = () => {
   const [selectedCategory, setSelectedCategory] = useState<String>("");
-  const [selectedSpice, setSelectedSpice] = useState<String>("");
-  const [selectedSignature, setSelectedSignature] = useState<String>("");
+  const [selectedSpice, setSelectedSpice] = useState<String>("NA");
+  const [selectedSignature, setSelectedSignature] = useState<boolean>(false);
 
   const [categories, setCategories] = useState([]);
   const [itemAdded, setItemAdded] = useState(false);
@@ -40,16 +40,7 @@ const Page = () => {
     const eta = etaRef.current?.value;
     const price = priceRef.current?.value;
 
-    if (category !== "null" && itemName && eta) {
-      console.log({
-        category,
-        itemName,
-        eta,
-        price,
-        spiceLevel,
-        isSignature,
-      });
-
+    if (category && itemName && eta && price) {
       const res = await fetch("/api/menu-items", {
         method: "POST",
         body: JSON.stringify({
@@ -70,14 +61,6 @@ const Page = () => {
     } else {
       alert("Please enter all the fields");
     }
-
-    console.log({
-      category,
-      itemName,
-      eta,
-      spiceLevel,
-      isSignature,
-    });
   };
 
   return (
