@@ -95,11 +95,17 @@ const Page = () => {
                 type="text"
                 placeholder="Enter Item Name"
                 className="border p-2"
+                onChange={(e) => filterByName(e.target.value)}
               />
             </div>
             <div className="space-y-4">
               <h3 className="font-poppins text-[#77248BB5]">ETA</h3>
-              <input type="text" placeholder="ETA" className="border p-2" />
+              <input
+                type="text"
+                placeholder="ETA"
+                className="border p-2"
+                onChange={(e) => filterByETA(e.target.value)}
+              />
             </div>
           </div>
           <div className="pt-16">
@@ -171,19 +177,15 @@ const Page = () => {
                           <td className="px-6 py-4 font-medium  whitespace-nowrap ">
                             {item?.category}
                           </td>
-                          <td
-                            className={`px-6 py-4 ${
-                              item.signature
-                                ? "text-yellow-500 font-semibold "
-                                : ""
-                            }`}
-                          >
+                          <td className={`px-6 py-4 capitalize`}>
                             {item?.name}
-                            {"🌶️".repeat(item.spice)}
                           </td>
-                          <td className="px-6 py-4">{item?.eta}</td>
-                          <td className="px-6 py-4">{item?.spice}</td>
-                          <td className="px-6 py-4">
+                          <td className="px-6 py-4">{item?.eta} mins</td>
+                          <td className="px-6 py-4">{item?.price} Rs</td>
+                          <td className="px-6 py-4 capitalize">
+                            {item?.spice}
+                          </td>
+                          <td className="px-6 py-4 capitalize">
                             {item?.signature ? "Yes" : "No"}
                           </td>
                           <td className="px-6 py-4 flex gap-4">

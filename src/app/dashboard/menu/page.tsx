@@ -78,7 +78,7 @@ const Page = () => {
           <div className="p-8 px-16 shadow-md flex justify-center border-2 rounded">
             <div className="flex flex-col gap-4 justify-between">
               {itemAdded && (
-                <div className="flex text-center items-center gap-4 p-4 shadow-md animate-bounce">
+                <div className="flex text-center items-center gap-4 p-4 shadow-md animate-bounce mt-2">
                   <BiCheckCircle size={30} />
                   <h3>Item Added</h3>
                 </div>
