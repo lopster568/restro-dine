@@ -2,7 +2,7 @@
 import { useState } from "react";
 import OrderItem from "./order-item";
 
-const TableMenu = () => {
+const TableService = () => {
   const [modal, setModal] = useState(false);
   return (
     <div>
@@ -16,10 +16,9 @@ const TableMenu = () => {
             <p className="text-2xl font-bold">Table Number 42</p>
             <div>
               <ol>
-                <li>Item 1</li>
-                <li>Item 1</li>
-                <li>Item 1</li>
-                <li>Item 1</li>
+                <li>Service 1</li>
+                <li>Service 1</li>
+                <li>Service 1</li>
               </ol>
             </div>
           </div>
@@ -34,4 +33,4 @@ const TableMenu = () => {
   );
 };
 
-export default TableMenu;
+export default TableService;
