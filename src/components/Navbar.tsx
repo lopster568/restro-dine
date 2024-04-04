@@ -5,7 +5,7 @@ import { HiOutlineBellAlert } from "react-icons/hi2";
 
 const Navbar = () => {
   return (
-    <div className="flex justify-between items-center py-4 mb-10">
+    <div className="flex justify-between items-center py-4 mb-8">
       <div className="flex w-3/5">
         <CiSearch className="border p-1 font-light" size={40} />
         <input

@@ -68,15 +68,17 @@ const Page = () => {
   return (
     <>
       <Navbar />
-      <div className="pt-8">
+      <div>
+        {/*        
         <div>
           <h2 className="font-poppins text-2xl font-extrabold text-[#77248BB5] ml-4 md:ml-0">
             Menu Details
           </h2>
-        </div>
-        <div className="p-16 w-full flex justify-center">
-          <div className="p-16 shadow-md flex justify-center border-2 rounded">
-            <div className="flex flex-col gap-8 justify-between">
+  </div> 
+  */}
+        <div className="px-16 w-full flex justify-center">
+          <div className="p-8 px-16 shadow-md flex justify-center border-2 rounded">
+            <div className="flex flex-col gap-4 justify-between">
               {itemAdded && (
                 <div className="flex text-center items-center gap-4 p-4 shadow-md animate-bounce">
                   <BiCheckCircle size={30} />
