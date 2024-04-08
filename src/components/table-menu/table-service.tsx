@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import OrderItem from "./order-item";
+import OrderItem from "./service-table";
 
 const TableService = () => {
   const [modal, setModal] = useState(false);

@@ -1,6 +1,7 @@
 "use client";
 import Navbar from "@/components/Navbar";
-import TableMenu from "@/components/table-menu/table-menu";
+import OrderTable from "@/components/table-menu/order-table";
+import TableMenu from "@/components/table-menu/order-table";
 import { useRef, useState } from "react";
 import { BiCheckCircle } from "react-icons/bi";
 
@@ -14,10 +15,10 @@ const Page = () => {
             Orders
           </h2>
         </div>
-        <div className="px-16 w-full flex justify-center">
-          <div className="p-16 shadow-md w-full flex justify-center border-2 rounded gap-16">
-            <TableMenu />
-            <TableMenu />
+        <div className="w-full flex justify-center">
+          <div className="p-12 shadow-md w-full flex flex-col md:flex-row justify-center border-2  rounded gap-16">
+            <OrderTable />
+            <OrderTable />
           </div>
         </div>
       </div>
